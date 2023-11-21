@@ -1,22 +1,24 @@
-// server.js
+// Import necessary modules
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
-
+// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
+/// Connect to MongoDB using mongoose
 mongoose.connect(process.env.MONGO_URI);
 
-// Import User model
+// Create User model
 const User = require('./models/User');
 
-// Middleware
+// Middleware to parse JSON
 app.use(express.json());
 
 // Routes
+
+// GET: Return all users
 app.get('/users', async (req, res) => {
   try {
     const users = await User.find();
@@ -26,6 +28,7 @@ app.get('/users', async (req, res) => {
   }
 });
 
+// POST: Add a new user to the database
 app.post('/users', async (req, res) => {
   try {
     const user = new User(req.body);
@@ -36,6 +39,7 @@ app.post('/users', async (req, res) => {
   }
 });
 
+// PUT: Edit a user by ID
 app.put('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -46,6 +50,7 @@ app.put('/users/:id', async (req, res) => {
   }
 });
 
+// DELETE: Remove a user by ID
 app.delete('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
